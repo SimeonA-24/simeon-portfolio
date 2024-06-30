@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>form validation</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'rubik';
+      box-sizing: border-box;
+    }
+
+    .container {
+      background: rgb(1, 1, 61);
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    form {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: space-around;
+      flex-direction: column;
+      background: #eee;
+      border-radius: 3px;
+      height: 550px;
+      padding: 20px;
+    }
+
+    .input-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+      font-size: 17px;
+      position: relative;
+    }
+
+    .input-group input {
+      font-size: 17px;
+      width: 300px;
+      padding: 3px;
+      height: 40px;
+      border: 0;
+      border-bottom: 2px solid gray;
+      background: white;
+      outline: none;
+    }
+
+    .input-group textarea {
+      width: 300px;
+      min-height: 150px;
+      background: white;
+      border: 0;
+      border-bottom: 2px solid gray;
+      outline: none;
+    }
+
+    button {
+      background-color: rgb(1, 1, 61);
+      color: #eee;
+      font-size: 20px;
+      padding: 7px 14px;
+      border: 0;
+      border-radius: 5px;
+      width: 100px;
+      align-self: center;
+      cursor: pointer;
+    }
+
+    .input-group span {
+      position: absolute;
+      bottom: 10px;
+      right: 17px;
+      font-size: 14px;
+      color: red;
+    }
+
+    #submit-error {
+      color: red;
+    }
+
+    .input-group span img {
+      width: 20px;
+      padding: 2px;
+      background: green;
+      border-radius: 50%;
+      margin-bottom: -5px;
+    }
+
+
+    @media (max-width: 500px) {
+      .input-group {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <form>
+      <div class="input-group">
+        <label>Full Name</label>
+        <input type="text" placeholder="Enter your Name" id="contact-name" onkeyup="validateName()">
+        <span id="name-error"></span>
+      </div>
+      <div class="input-group">
+        <label>Phone No.</label>
+        <input type="tel" placeholder="123 456 7890" id="contact-phone" onkeyup="validatePhone()">
+        <span id="phone-error"></span>
+      </div>
+      <div class="input-group">
+        <label>Email Id</label>
+        <input type="email" placeholder="Enter your Email" id="contact-email" onkeyup="validateEmail()">
+        <span id="email-error"></span>
+      </div>
+      <div class="input-group">
+        <label>Your Message</label>
+        <textarea rows="5" placeholder="Enter your message" id="contact-message" onkeyup="validateMessage()"></textarea>
+        <span id="message-error"></span>
+      </div>
+
+      <button onclick="return validateForm()">submit</button>
+      <span id="submit-error"></span>
+    </form>
+  </div>
+  <script>
+    var nameError = document.getElementById('name-error')
+    var phoneError = document.getElementById('phone-error')
+    var emailError = document.getElementById('email-error')
+    var messageError = document.getElementById('message-error')
+    var submitError = document.getElementById('submit-error')
+
+
+    function validateName() {
+      var name = document.getElementById('contact-name').value;
+
+      if (name.length == 0) {
+        nameError.innerHTML = 'Name is required'
+        return false;
+      }
+      if (!name.match(/^[A-Za-z]*\s{1}[A-Za-z]*$/)) {
+        nameError.innerHTML = 'Write out Full Name'
+        return false
+      }
+      nameError.innerHTML = '<img src="files/checkmark.svg">';
+      return true;
+    }
+
+    function validatePhone() {
+      var phone = document.getElementById('contact-phone').value;
+      if (phone.length == 0) {
+        phoneError.innerHTML = 'phone is required'
+        return false
+      }
+
+      if (phone.length !== 10) {
+        phoneError.innerHTML = 'phone no should be 10 digit'
+        return false;
+      }
+      if (!phone.match(/^[0-9]{10}$/)) {
+        phoneError.innerHTML = 'only digit please.'
+        return false;
+      }
+
+      phoneError.innerHTML = '<img src="files/checkmark.svg">'
+      return true
+
+    }
+
+    function validateEmail() {
+      var email = document.getElementById('contact-email').value;
+      if (email.length == 0) {
+        emailError.innerHTML = 'Email is required'
+        return false
+      }
+
+      if (!email.match(/^[A-Za-z\._\-[0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
+        emailError.innerHTML = 'Email invalid'
+        return false;
+      }
+
+      emailError.innerHTML = '<img src="files/checkmark.svg">'
+      return true
+
+    }
+
+    function validateMessage() {
+      var message = document.getElementById('contact-message').value;
+      var required = 30;
+      var left = required - message.length;
+
+      if (left > 0) {
+        messageError.innerHTML = left + ' more characters required'
+        return false
+      }
+
+
+      messageError.innerHTML = '<img src="files/checkmark.svg">'
+      return true
+
+    }
+
+    function validateForm() {
+      if (!validateName() || !validatePhone() || !validateEmail() || !validateMessage()) {
+        submitError.style.display = 'block';
+        submitError.innerHTML = 'Please fix error to submit';
+        setTimeout(function () { submitError.style.display = 'none'; }, 3000)
+        return false
+      }
+
+    }
+  </script>
+</body>
+
+</html>

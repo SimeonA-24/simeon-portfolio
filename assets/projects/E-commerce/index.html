@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Page Design</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'rubik', sans-serif;
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 100%;
+      min-height: 100vh;
+      background-color: #d0eaff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product {
+      width: 90%;
+      max-width: 1000px;
+      display: flex;
+    }
+
+    .gallery {
+      flex-basis: 47%;
+      background: #fff;
+      box-shadow: -10px 5px 10px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .gallery img {
+      max-height: 500px;
+      max-width: 500px;
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .details {
+      flex-basis: 53%;
+      background: #fff;
+      padding: 40px;
+      padding-left: 60px;
+      box-shadow: -10px 5px 10px 10px rgba(0, 0, 0, 0.1);
+      font-size: 13px;
+      font-weight: 500;
+      color: #777;
+    }
+
+    .details h1 {
+      color: #333;
+      font-size: 35px;
+    }
+
+    .details h2 {
+      color: #555;
+      font-size: 30px;
+      font-weight: 600;
+    }
+
+    .details h3 {
+      color: #00d874;
+      margin-bottom: 20px;
+    }
+
+    .details form {
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    .size-select {
+      display: flex;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    .size-select p {
+      width: 75px;
+    }
+
+    .size-select input:checked+span {
+      color: blue;
+      font-weight: 600;
+    }
+
+    .size-select input {
+      display: none;
+    }
+
+    .size-select span {
+      padding: 5px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .color-select {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .color-select p {
+      width: 75px;
+    }
+
+    .color-select span {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      margin-right: 15px;
+      color: pointer;
+      border: 1px solid;
+    }
+
+    .color-1 {
+      background: black;
+    }
+
+    .color-2 {
+      background: green;
+    }
+
+    .color-3 {
+      background: blue;
+    }
+
+    .color-4 {
+      background: white;
+    }
+
+
+    .color-select input {
+      display: none;
+    }
+
+    .color-select input:checked+span {
+      transform: scale(0.7);
+      box-shadow: 0 0 0 4px #fff, 0 0 0 6px #000;
+    }
+
+    .quantity-select {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .quantity-select p {
+      width: 75px;
+    }
+
+    .quantity-select input {
+      background: #eee;
+      border: 0;
+      outline: 0;
+      padding: 2px 2px 2px 15px;
+      height: 30px;
+      width: 50px;
+      border-radius: 12px;
+    }
+
+    form button {
+      background: #553ff0;
+      color: #fff;
+      font-size: 17px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 30px;
+      border: 0;
+      outline: 0;
+      margin-top: 50px;
+      box-shadow: 0 10px 10px rgba(85, 63, 240, 0.25);
+      cursor: pointer;
+    }
+
+    .controls {
+      position: absolute;
+      display: flex;
+      bottom: 20px;
+    }
+
+    .btn {
+      display: block;
+      height: 10px;
+      width: 10px;
+      border-radius: 50%;
+      background: rgba(3, 2, 2, 0.5);
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    .btn.active {
+      background: #553ff0;
+    }
+
+
+
+    @media(max-width: 700px) {
+      .product {
+        flex-direction: column;
+      }
+
+      .gallery {
+        height: 200px;
+      }
+
+      .gallery img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="product">
+      <div class="gallery">
+        <img src="images/IMG_1.JPG" id="productImg">
+        <div class="controls">
+          <span class="btn active"></span>
+          <span class="btn"></span>
+          <span class="btn"></span>
+        </div>
+      </div>
+      <div class="details">
+        <h1>Louis Vuitton Sneakers</h1>
+        <h2>$38.00</h2>
+        <h3>10% OFF</h3>
+        <p>SimeonA is an American manufacturer of jeans and other clothing items, particularly workwear.</p>
+        <form>
+          <div class="size-select">
+            <p>size</p>
+            <label for="small">
+              <input type="radio" name="size" id="small">
+              <span>S</span>
+            </label>
+            <label for="medium">
+              <input type="radio" name="size" id="medium">
+              <span>M</span>
+            </label>
+            <label for="large">
+              <input type="radio" name="size" id="large">
+              <span>L</span>
+            </label>
+            <label for="x-large">
+              <input type="radio" name="size" id="x-large">
+              <span>XL</span>
+            </label>
+            <label for="xx-large">
+              <input type="radio" name="size" id="xx-large">
+              <span>XXL</span>
+            </label>
+          </div>
+
+          <div class="color-select">
+            <p>Color</p>
+            <label for="black">
+              <input type="radio" name="color" id="black">
+              <span class="color-1"></span>
+            </label>
+            <label for="green">
+              <input type="radio" name="color" id="green">
+              <span class="color-2"></span>
+            </label>
+            <label for="blue">
+              <input type="radio" name="color" id="blue">
+              <span class="color-3"></span>
+            </label>
+            <label for="white">
+              <input type="radio" name="color" id="white">
+              <span class="color-4"></span>
+            </label>
+          </div>
+
+          <div class="quantity-select">
+            <p>Quantity</p>
+            <input type="number" value="1">
+          </div>
+          <button>Buy Now</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <script>
+    let productImg = document.getElementById("productImg")
+    let btn = document.getElementsByClassName("btn");
+
+
+    btn[0].onclick = function () {
+      productImg.src = "images/IMG_1.JPG";
+      for (bt of btn) {
+        bt.classList.remove('active')
+      }
+      this.classList.add('active')
+    }
+
+    btn[1].onclick = function () {
+      productImg.src = "images/IMG_2.JPG";
+      for (bt of btn) {
+        bt.classList.remove('active')
+      }
+      this.classList.add('active')
+    }
+
+    btn[2].onclick = function () {
+      productImg.src = "images/IMG_3.JPG";
+      for (bt of btn) {
+        bt.classList.remove('active')
+      }
+      this.classList.add('active')
+    }
+  </script>
+</body>
+
+</html>

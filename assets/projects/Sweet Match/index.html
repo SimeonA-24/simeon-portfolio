@@ -1,0 +1,3114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sweet Match</title>
+
+  <style>
+    :root {
+      /**
+  *colors
+  */
+
+      --selective-yellow: hsl(42, 100%, 56%);
+      --roman-silver: hsl(240, 6%, 51%);
+      --light-gray: hsl(240, 6%, 51%);
+      --disabled: hsla(357, 31%, 24%, 0.486);
+      --roman-silver_10: hsla(240, 6%, 51%, 0.1);
+      --main-color: hsl(357, 100%, 75%);
+      --main-color-2: hsla(357, 82%, 85%, 0.863);
+      --light-main: hsla(357, 100%, 75%, 0.466);
+      --main-light: hsl(357, 91%, 91%);
+      --main-gradient: linear-gradient(135deg, #f74f58, #ffbabe);
+      --bg: hsl(355, 100%, 97%);
+      --light-bg: hsla(357, 100%, 75%, 0.171);
+      --oxford-blue: hsl(224, 53%, 10%);
+      --keppei: hsl(173, 60%, 47%);
+      --white: hsl(0, 0%, 100%);
+      --black: hsl(0, 0%, 0%);
+      --black_10: hsla(0, 0%, 0%, 0.102);
+      --error: red;
+
+      /**
+  * typography
+  */
+
+      --ff-gilory: 'rubik', sans-serif;
+
+      --headline-lg: 5rem;
+      --headline-md: 4rem;
+      --headline-sm: 3rem;
+      --title-lg: 2.5rem;
+      --title-md: 2rem;
+      --title-sm: 1.7rem;
+
+      --fw-500: 500;
+      --fw-600: 600;
+      --fw-700: 700;
+      /**
+  * Border Radius
+  */
+
+      --radius-4: 4px;
+      --radius-6: 6px;
+      --radius-8: 8px;
+      --radius-circle: 50%;
+
+      /**
+  *Transition
+  */
+
+      --transition: 0.25s ease;
+      --cubic-in: cubic-bezier(0.51, 0.03, 0.64, 0.28);
+      --cubic-out: cubic-bezier(0.05, 0.83, 0.52, 0.97);
+
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+
+
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: 'rubik';
+    }
+
+    body {
+      background-color: var(--bg);
+    }
+
+    html {
+      font-size: 60%;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+
+    .account .back {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: transparent;
+      border: 0;
+    }
+
+    .btn:is([disabled]) {
+      background: var(--disabled);
+      color: #fff;
+    }
+
+    .btn:hover:is([disabled]) {
+      background: var(--black_10);
+      color: #fff;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .back {
+      top: 10px;
+      left: 10px;
+      background-color: transparent;
+      border: 0;
+    }
+
+    .back svg {
+      width: var(--headline-md);
+      height: var(--headline-md);
+      color: var(--main-color);
+      background: var(--main-light);
+      border-radius: 50%;
+    }
+
+
+    /** #PRELOAD **/
+
+    .preload {
+      width: 100%;
+      height: 100vh;
+      background-color: var(--bg);
+      z-index: 1;
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      flex-direction: column;
+    }
+
+    .circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 6px dotted var(--main-color);
+      border-block-start-color: transparent;
+      animation: rotate360 2s ease infinite;
+    }
+
+
+
+
+    @keyframes rotate360 {
+      0% {
+        transform: rotate(0);
+      }
+
+      100% {
+        transform: rotate(1turn);
+      }
+    }
+
+    .preload .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .preload .logo h2 {
+      font-size: 30px;
+      font-weight: 440;
+      text-transform: capitalize;
+      color: var(--oxford-blue);
+    }
+
+
+
+
+    /** #ABOUT **/
+
+    .about {
+      display: none;
+    }
+
+
+    .about-box.active {
+      display: flex;
+    }
+
+    .about-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+      text-align: center;
+      padding: 20px;
+
+    }
+
+    .navigator {
+      gap: 1rem;
+      display: flex;
+    }
+
+    .nav.active {
+      background-color: var(--main-color);
+    }
+
+    .nav {
+      padding: 0.3rem;
+      border: 0;
+      background-color: var(--black_10);
+      border-radius: 50%;
+    }
+
+    .secondary-btn {
+      border-radius: 10px;
+      --main-color: var(--light-main);
+    }
+
+    .primary-btn {
+      max-width: 300px;
+    }
+
+    :is(.primary-btn, .secondary-btn, .interest-btn, .continue-link):is(:hover, :focus-visible) {
+      box-shadow: 0 0 0 2px var(--white), 0 0 0 5px var(--main-color);
+      background-color: var(--main-color);
+      color: var(--bg);
+    }
+
+
+    .btn {
+      width: 100%;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      text-align: center;
+      border-radius: 20px;
+      padding: 10px;
+      color: var(--white);
+      background-color: var(--main-color);
+      text-decoration: none;
+      font-weight: 500;
+      border: none;
+    }
+
+    /** #ACCOUNT **/
+
+    .account {
+      position: relative;
+      width: 100%;
+    }
+
+    .sign-option {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      height: 100vh;
+      align-items: center;
+      padding: 0px 30px;
+      width: 100%;
+      border-bottom: 2px solid;
+    }
+
+    .sign-option .continue-with {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 20px;
+    }
+
+    .sign-up {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      height: 100vh;
+      align-items: center;
+      padding: 0px 30px;
+      width: 100%;
+      border-bottom: 2px solid;
+
+    }
+
+
+
+    .sign-in {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      height: 100vh;
+      align-items: center;
+      padding: 0px 30px;
+      width: 100%;
+      border-bottom: 2px solid;
+
+    }
+
+    .forgot_password {
+      color: var(--main-color);
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: var(--title-sm);
+    }
+
+
+    .sign-in .input-group svg,
+    .sign-up .input-group svg {
+      color: var(--main-color);
+      width: var(--title-sm);
+      height: var(--title-sm);
+    }
+
+    .sign-in .input-group .inverse-svg,
+    .sign-up .input-group .inverse-svg {
+      fill: var(--main-color);
+      width: var(--title-sm);
+      height: var(--title-sm);
+    }
+
+
+    .headline-md {
+      font-size: var(--headline-md);
+      font-weight: var(--fw-500);
+      text-transform: capitalize;
+    }
+
+    .headline-lg {
+      font-size: var(--headline-lg);
+      font-weight: var(--fw-700);
+      text-transform: capitalize;
+    }
+
+    .headline-sm {
+      font-size: var(--headline-sm);
+      font-weight: var(--fw-600);
+      text-transform: capitalize;
+    }
+
+    .title-sm {
+      font-size: var(--title-sm);
+    }
+
+    .title-md {
+      font-size: var(--title-md);
+    }
+
+    .title-lg {
+      font-size: var(--title-lg);
+    }
+
+    .option {
+      display: flex;
+      width: 100%;
+      align-items: center;
+    }
+
+    .option hr {
+      height: 0.1rem;
+      width: 50%;
+      background-color: var(--main-color);
+      border: 0;
+    }
+
+    .option p {
+      text-wrap: nowrap;
+      padding: 0 10px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .span {
+      color: var(--main-color);
+      height: 100%;
+    }
+
+    .span:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+
+    .continue {
+      display: flex;
+      width: 80%;
+      gap: 1.5rem;
+    }
+
+    .continue-link {
+      padding: 10px 0px;
+      border: none;
+    }
+
+
+    .input-container {
+      display: flex;
+      width: 100%;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      gap: 3rem;
+    }
+
+    .input-group .input-error {
+      right: 5px;
+      color: var(--error);
+    }
+
+    .input-group .about-you-error {
+      top: auto;
+      bottom: 5px;
+      right: 5px;
+      color: var(--error);
+    }
+
+
+    .input-group {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      margin: 0;
+      min-width: 200px;
+      background-color: var(--bg);
+      padding: 0px 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 0 2px var(--main-color);
+      position: relative;
+    }
+
+    .input-group input {
+      width: 100%;
+      height: 40px;
+      font-size: var(--title-sm);
+      border: 0;
+      padding-left: 10px;
+      outline: none;
+      background-color: transparent;
+    }
+
+    .input-group select {
+      width: 100%;
+      height: 40px;
+      font-size: var(--title-sm);
+      border: 0;
+      padding-left: 10px;
+      outline: none;
+      background-color: transparent;
+    }
+
+    .input-group select option {
+      background: var(--bg);
+    }
+
+
+    .input-group span {
+      position: absolute;
+      background-color: var(--bg);
+      padding: 0 10px;
+      font-size: var(--title-sm);
+      top: -10px;
+      color: var(--main-color);
+    }
+
+
+    :is(.input-group):is(:hover, :focus-visible) svg {
+      color: var(--main-color);
+      background-color: var(--bg);
+    }
+
+
+
+    :is(.input-group):is(:hover, :focus-visible) .inverse-svg {
+      fill: var(--main-color);
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .remember .checkbox {
+      width: var(--title-sm);
+      height: var(--title-sm);
+    }
+
+
+
+    .view-state {
+      position: absolute;
+      right: 10px;
+      top: 55%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+
+    .view-state #no {
+      display: none;
+    }
+
+
+    /** #PROFLE **/
+
+    .create-profile {
+      display: block;
+      position: relative;
+    }
+
+
+    .select-country {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      align-self: flex-start;
+      gap: 20px;
+      height: 100vh;
+      border-bottom: 2px solid;
+      padding: 10px;
+    }
+
+
+
+    #country-list {
+      display: grid;
+      align-items: center;
+      justify-content: center;
+      gap: 20px 0;
+      width: 100%;
+      padding-top: 30px;
+      height: 90vh;
+      overflow-y: scroll;
+      font-size: var(--title-sm);
+    }
+
+    #country-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .country-continue {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg);
+      height: 80px;
+      bottom: 0px;
+    }
+
+    .country-continue .btn {
+      width: 50%;
+    }
+
+    .select-country .input-group {
+      width: 100%;
+      max-width: 400px;
+      align-self: center;
+    }
+
+
+    .input-group.Country-input {
+      width: 80%;
+    }
+
+    .Country {
+      border: 2px solid var(--main-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      border-radius: 10px;
+      align-self: center;
+    }
+
+
+
+    .Country:is(:hover, :focus-visible) {
+      background: var(--main-color);
+      color: var(--bg);
+      box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--main-color);
+    }
+
+
+
+    .Country input {
+      width: var(--title-md);
+      height: var(--title-md);
+      cursor: pointer;
+    }
+
+
+    /* edit profile */
+
+    .edit-profile {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      min-height: 100vh;
+      border-bottom: 2px solid;
+    }
+
+    .edit-profile h3 {
+      text-transform: capitalize;
+      margin-bottom: -30px;
+    }
+
+    .profile-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 50px;
+      width: 100%;
+    }
+
+
+    .name-info {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      width: 90%;
+
+      max-width: 750px;
+    }
+
+    .other-info {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      width: 90%;
+      max-width: 750px;
+    }
+
+    .about-info {
+      display: grid;
+      align-items: start;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      width: 90%;
+      max-width: 650px;
+    }
+
+
+    .input-group p {
+      font-size: var(--title-sm);
+      padding: 10px;
+      min-width: 100%;
+      max-width: 100%;
+      min-height: 300px;
+      max-height: 300px;
+      outline: none;
+      background: transparent;
+      border: 0;
+    }
+
+    .continue-profile {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+
+
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+
+    .edit-profile .btn {
+      width: 80%;
+      align-self: center;
+      margin-bottom: 10px;
+    }
+
+    /* upload photos */
+
+    .upload-photo {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      justify-content: space-between;
+      gap: 20px;
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
+      border-bottom: 2px solid;
+    }
+
+    .upload-photo p {
+      align-self: center;
+    }
+
+    .photo-area {
+      align-self: center;
+      display: grid;
+      gap: 20px;
+      width: 90%;
+    }
+
+    .file-input {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .file-input label {
+      height: 300px;
+      min-width: 250px;
+      width: 100%;
+      border-radius: var(--radius-8);
+      border-style: double;
+      border-width: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-color: var(--main-color);
+      background-color: var(--light-main);
+      cursor: pointer;
+      transition: 0.3s ease-in-out;
+      position: relative;
+    }
+
+    .file-input figure {
+      background: var(--main-gradient);
+      padding: 5px 7px;
+      border-radius: var(--radius-circle);
+      cursor: pointer;
+      border: 5px solid var(--);
+      z-index: 2;
+    }
+
+    .file-input figure svg {
+      width: var(--headline-lg);
+      border-radius: var(--radius-circle);
+      height: var(--headline-lg);
+      color: var(--bg);
+    }
+
+    :is(.file-input label, .match-input):hover {
+      transform: scale(1.04);
+      border: 2px solid transparent;
+      box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--main-color);
+    }
+
+    .file-input img {
+      width: 100%;
+      height: 100%;
+      z-index: -3;
+      border-radius: var(--radius-4);
+      position: absolute;
+      object-fit: cover;
+    }
+
+    .upload-photo .btn {
+      width: 80%;
+      align-self: center;
+      margin-bottom: 10px;
+    }
+
+
+    .file-input input {
+      display: none;
+    }
+
+    /* interest */
+
+
+    .interest {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+      width: 100%;
+      min-height: 100vh;
+      border-bottom: 2px solid;
+    }
+
+    .interest p {
+      align-self: center;
+    }
+
+
+    .clicked-interest {
+      background-color: var(--main-color);
+    }
+
+    .interest .btn {
+      align-self: center;
+    }
+
+
+    .interest-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .interest-btn {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      border-radius: 20px;
+      padding: 10px 30px;
+      text-decoration: none;
+      font-weight: 500;
+      background: transparent;
+      border: 2px solid var(--main-color);
+      color: var(--main-color);
+    }
+
+    /* ideal match */
+
+    .ideal-match {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      padding: 10px;
+      gap: 20px;
+      font-size: 100%;
+      width: 100%;
+      min-height: 100vh;
+      border-bottom: 2px solid;
+    }
+
+    .ideal-match p {
+      align-self: center;
+    }
+
+    .all-ideal-match {
+      align-self: center;
+      display: grid;
+      gap: 20px;
+      width: 90%;
+    }
+
+
+    .match-input {
+      height: 250px;
+      min-width: 200px;
+      width: 100%;
+      border-radius: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+      border: 4px solid var(--main-color);
+      background-color: var(--light-main);
+      cursor: pointer;
+      transition: 0.3s ease-in-out;
+      position: relative;
+      font-weight: 600;
+    }
+
+    .ideal-match .btn {
+      align-self: center;
+    }
+
+    .match-input:hover:is([disabled]) {
+      transform: none;
+      box-shadow: none;
+      background: var(--light-main);
+    }
+
+    .clicked {
+      height: 250px;
+      min-width: 200px;
+      width: 100%;
+      border-radius: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+      background-color: var(--main-color);
+      cursor: pointer;
+      transition: 0.3s ease-in-out;
+      position: relative;
+      font-weight: 600;
+      border: none;
+    }
+
+
+
+    .clicked:hover {
+      background-color: var(--main-color);
+      border-color: var(--white);
+    }
+
+
+    .clicked .title-md {
+      color: var(--main-light);
+    }
+
+
+    .clicked figure {
+      padding: 5px 7px;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .clicked figure svg {
+      width: 50px;
+      height: 50px;
+      color: var(--bg);
+    }
+
+
+    .match-input:hover {
+      background-color: var(--main-color);
+      border-color: var(--white);
+    }
+
+
+    .match-input:hover .title-md {
+      color: var(--main-light);
+    }
+
+    .match-input figure {
+      padding: 5px 7px;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .match-input figure svg {
+      width: 50px;
+      height: 50px;
+      color: var(--main-color);
+    }
+
+    .match-input:hover figure svg {
+      color: var(--bg)
+    }
+
+    .login-profile {
+      display: block;
+    }
+
+    /* create pin */
+
+
+    .create-pin {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      justify-content: space-between;
+      height: 90%;
+      gap: 30px;
+      padding: 10px;
+      min-width: 300px;
+      min-height: 100vh;
+      border-bottom: 2px solid;
+    }
+
+    .create-pin p {
+      align-self: center;
+    }
+
+    .pin-group {
+      height: 60px;
+      align-self: center;
+      width: 100%;
+      max-width: 400px;
+      position: relative;
+    }
+
+    .pin-group input {
+      width: 100%;
+      border: 2px solid var(--main-color);
+      font-size: 200%;
+      outline: 0;
+      height: 100%;
+      text-align: center;
+    }
+
+    .pin-group .input-length {
+      width: 30px;
+      height: 60px;
+      background-color: var(--bg);
+      border: 2px solid var(--main-color);
+      position: absolute;
+      top: 0;
+      right: 0;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pin-group input:focus-within {
+      background: var(--light-main);
+    }
+
+    .create-pin button {
+      max-width: 300px;
+    }
+
+    .btns {
+      display: flex;
+      width: 65%;
+      gap: 30px;
+      align-self: center;
+      max-width: 500px;
+    }
+
+
+
+
+    .yes {
+      background-color: var(--main-color);
+      color: var(--white);
+    }
+
+    /* congrate user */
+
+    .create-congrat {
+      display: block;
+    }
+
+    .congrat-img {
+      position: relative;
+      height: 100px;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      width: 200px;
+    }
+
+    .congrat-img div {
+      position: absolute;
+      background-color: var(--main-color);
+    }
+
+    .congrat-user {
+      padding: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--main-light);
+      border-radius: var(--radius-circle);
+      background: linear-gradient(270deg, var(--main-color) 20%, var(--main-color-2) 100%);
+    }
+
+    .congrat-user svg {
+      width: 50px;
+      height: 50px;
+      border-radius: 20px;
+    }
+
+    .congrat-img .filter1 {
+      width: 15px;
+      top: 0;
+      left: 30px;
+      border-radius: 50%;
+      height: 15px;
+    }
+
+    .congrat-img .filter2 {
+      width: 5px;
+      top: -15px;
+      left: 120px;
+      border-radius: 50%;
+      height: 5px;
+    }
+
+    .congrat-img .filter3 {
+      width: 7px;
+      bottom: 10px;
+      left: 40px;
+      border-radius: 50%;
+      height: 7px;
+    }
+
+    .congrat-img .filter4 {
+      width: 10px;
+      top: 10px;
+      right: 30px;
+      border-radius: 50%;
+      height: 10px;
+    }
+
+    .congrat-img .filter5 {
+      width: 5px;
+      bottom: -15px;
+      left: 75px;
+      border-radius: 50%;
+      height: 5px;
+    }
+
+    .congrat-img .filter6 {
+      width: 6px;
+      bottom: 25px;
+      right: 35px;
+      border-radius: 50%;
+      height: 6px;
+    }
+
+    .congrat-img .filter7 {
+      width: 5px;
+      bottom: -16px;
+      right: 30px;
+      border-radius: 50%;
+      height: 5px;
+    }
+
+
+
+    .create-congrat {
+      width: 100%;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      background: var(--light-main);
+      position: absolute;
+    }
+
+    .congrat-container {
+      width: 44%;
+      position: absolute;
+      min-width: 250px;
+      max-width: 400px;
+      padding: 10px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      min-height: 60%;
+      background: var(--main-light);
+      border-radius: 10%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+
+
+
+    .style {
+      background: linear-gradient(180deg, var(--main-color) 50%, var(--bg)50%);
+    }
+
+    /* forgot password */
+
+    .Forgot-password {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 100vh;
+      gap: 30px;
+      padding: 10px;
+      border-bottom: 2px solid;
+    }
+
+
+    .Forgot-password .title-md {
+      font-size: calc(var(--title-sm) + 2px);
+    }
+
+
+    .restore-method-container {
+      display: grid;
+      gap: 20px;
+      align-items: center;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .restore-method {
+      display: flex;
+      align-items: start;
+      border: 2px solid var(--main-color);
+      padding: 30px 20px;
+      border-radius: 20px;
+      gap: 50px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .restore-method .span {
+      font-size: 15px;
+      opacity: .6;
+    }
+
+
+    .restore-method:hover {
+      box-shadow: 2px 2px 5px var(--main-color), -2px -2px 5px var(--main-color);
+      transform: scale(1.02);
+    }
+
+    .restore-method:hover .span {
+      text-decoration: underline var(--main-color);
+    }
+
+    .restore-method:active {
+      transform: scale(98%);
+    }
+
+    .restore-method figure svg {
+      width: 30px;
+      height: 30px;
+      color: var(--main-color);
+    }
+
+
+
+    .method-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+    }
+
+
+    /* get code */
+
+    .get-code {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 70%;
+      height: 100vh;
+      width: 100%;
+      align-items: center;
+      text-align: center;
+      justify-content: space-between;
+      gap: 30px;
+      padding: 10px;
+      min-width: 300px;
+      border-bottom: 2px solid;
+
+    }
+
+    .get-code .section-title {
+      align-self: flex-start;
+    }
+
+    .get-code .btn {
+      margin-top: 40px;
+      max-width: 300px;
+    }
+
+    .pin-area .other {
+      margin-top: 20px;
+    }
+
+    /* create new password */
+
+    .create-new-password {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100vh;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .create-new-password .section-title {
+      align-self: flex-start;
+    }
+
+
+    .create-new-password .input-group svg {
+      color: var(--main-color);
+      background-color: transparent;
+    }
+
+    .create-new-password .input-group .inverse-svg {
+      fill: var(--main-color);
+    }
+
+
+
+
+
+
+
+
+
+
+    @media (min-width: 575px) {
+      .all-ideal-match {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .input-container {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        max-width: 1000px;
+      }
+
+    }
+
+    @media (min-width: 768px) {
+
+      :root {
+
+        --headline-lg: 6rem;
+        --headline-md: 5rem;
+        --headline-sm: 4rem;
+        --title-lg: 3.5rem;
+        --title-md: 3rem;
+        --title-sm: 2rem;
+      }
+
+      .sign-option .continue-with {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        max-width: 1000px;
+      }
+
+      #country-list {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        padding: 30px;
+      }
+
+      .name-info {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .other-info {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .photo-area {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .all-ideal-match {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .restore-method-container {
+        grid-template-columns: 1fr 1fr;
+      }
+
+
+    }
+
+    @media (min-width: 992px) {
+
+
+      #country-list {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+        padding: 30px;
+      }
+
+      .photo-area {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .all-ideal-match {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+      }
+
+
+    }
+
+    @media (min-width: 1200px) {
+
+      #country-list {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 20px;
+        padding: 30px;
+      }
+
+      .photo-area {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 
+    - #PRELOAD
+  -->
+
+  <div class="preload">
+    <div class="logo">
+      <img src="./Assets/images/Crash.ec1942f7.png" alt="">
+      <h2>Sweet Match</h2>
+    </div>
+    <div class="circle"></div>
+  </div>
+
+
+
+  <!--
+    - #ABOUT
+    -->
+  <section class="about">
+    <div class="container">
+
+      <section class="section">
+        <div class="First-img about-box active">
+
+          <figure>
+            <img src="" width="250" height="250" alt="" class="about-cover">
+          </figure>
+
+          <div class="about-content">
+            <h1 class="headline-md">It's easy to find a soul mate nearby & around You</h1>
+          </div>
+
+        </div>
+
+        <div class="second-img about-box">
+
+          <figure>
+            <img src="" width="250" height="250" alt="" class="about-cover">
+          </figure>
+
+          <div class="about-content">
+            <h1 class="headline-md">It's easy to find a soul mate nearby & around You</h1>
+          </div>
+
+        </div>
+
+        <div class="third-img about-box">
+
+          <figure>
+            <img src="" width="250" height="250" alt="" class="about-cover">
+          </figure>
+
+          <div class="about-content">
+            <h1 class="headline-md">It's easy to find a soul mate nearby & around You</h1>
+          </div>
+
+        </div>
+
+      </section>
+
+      <div class="navigator">
+        <button class="nav active"></button>
+        <button class="nav"></button>
+        <button class="nav"></button>
+      </div>
+
+      <a href="" class="btn primary-btn">Next</a>
+
+    </div>
+  </section>
+
+  <main class="sign-option">
+
+    <button style="align-self: self-start;" class="back">
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em"
+        xmlns="http://www.w3.org/2000/svg">
+        <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+          d="M249.38 336 170 256l79.38-80m-68.35 80H342"></path>
+      </svg>
+    </button>
+
+    <figure>
+      <img src="" width="150" height="150" style="border-radius: 50%; border: 1px solid;" alt="" class="image-cover">
+    </figure>
+
+    <h1 class="headline-md">Let's you in</h1>
+    <div class="continue-with">
+      <a href="" class="btn secondary-btn title-sm"> <img src="./Assets/images/facebook.svg" alt="">Continue with
+        FaceBook</a>
+
+      <a href="" class="btn secondary-btn title-sm"> <img src="./Assets/images/google.svg" alt=""> Continue with
+        Google</a>
+
+      <a href="" class="btn secondary-btn title-sm"> <img src="./Assets/images/apple.svg" alt="">Continue with
+        Apple</a>
+    </div>
+
+    <div class="option">
+      <hr>
+      <p class="title-sm span">or</p>
+      <hr>
+    </div>
+
+    <button class="login btn primary-btn title-sm">sign in with password</button>
+
+    <p class="other title-sm">
+      Don't have an account? <span class="span signup">Sign up</span>
+    </p>
+  </main>
+
+
+
+
+  <main style="display: none;" class="sign-up">
+    <button style="align-self: self-start;" class="back">
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em"
+        xmlns="http://www.w3.org/2000/svg">
+        <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+          d="M249.38 336 170 256l79.38-80m-68.35 80H342"></path>
+      </svg>
+    </button>
+
+    <figure>
+      <img src="./Assets/images/Crash.ec1942f7.png" alt="">
+    </figure>
+
+    <h2 class="headline-sm">Create Your account</h2>
+
+    <div class="input-container">
+
+      <div class="input-group">
+
+        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
+          stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+
+        <input onkeydown="ValidateSignUpEmail()" type="email" class="signup-email" placeholder="email">
+
+        <span class="input-error signup-email-error"></span>
+
+      </div>
+
+      <div class="input-group">
+        <svg class="inverse-svg" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+          height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M12 2C9.243 2 7 4.243 7 7v2H6c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v2H9V7zm9.002 13H13v-2.278c.595-.347 1-.985 1-1.722 0-1.103-.897-2-2-2s-2 .897-2 2c0 .736.405 1.375 1 1.722V20H6v-9h12l.002 9z">
+          </path>
+        </svg>
+
+        <input onkeydown="ValidateSignUpPassword()" type="password" class="signup-password" placeholder="password">
+        <div class="view-state">
+          <svg id="signUp-yes" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
+            stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <svg id="signUp-no" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
+            style="display: none;" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+            </path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>
+        </div>
+
+        <span class="input-error signup-password-error"></span>
+      </div>
+
+    </div>
+
+    <div class="remember">
+      <div class="color">
+        <input type="checkbox" class="checkbox">
+        <span></span>
+      </div>
+      <span class="title-sm">Remember me</span>
+    </div>
+
+    <button onclick="ValidateSignUp()" class="btn primary-btn title-sm">Sign up</button>
+    <span class="input-error signup-error title-sm"></span>
+
+    <div class="option">
+      <hr>
+      <p class="title-sm span">or continue with</p>
+      <hr>
+    </div>
+
+    <div class="continue">
+      <button class="btn continue-link"><img src="./Assets/images/facebook.svg" alt="continue with facebook"></button>
+      <button class="btn continue-link"><img src="./Assets/images/google.svg" alt="continue with google"></button>
+      <button class="btn continue-link"><img src="./Assets/images/apple.svg" alt="continue with apple"></button>
+    </div>
+
+    <p class="other title-sm">
+      Already have an account? <span class="span login">Sign in</span>
+    </p>
+
+  </main>
+
+
+
+
+  <main style="display: none;" class="sign-in">
+
+    <button style="align-self: self-start;" class="back">
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em"
+        xmlns="http://www.w3.org/2000/svg">
+        <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+          d="M249.38 336 170 256l79.38-80m-68.35 80H342"></path>
+      </svg>
+    </button>
+
+
+    <figure>
+      <img src="./Assets/images/Crash.ec1942f7.png" alt="">
+    </figure>
+
+    <h2 class="headline-sm">Login to Your account</h2>
+
+    <div class="input-container">
+
+      <div class="input-group">
+
+        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
+          stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+
+        <input onkeydown="ValidateSignInEmail()" type="email" class="signin-email" placeholder="email">
+        <span class="input-error signin-email-error"></span>
+      </div>
+
+      <div class="input-group">
+        <svg class="inverse-svg" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+          height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M12 2C9.243 2 7 4.243 7 7v2H6c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v2H9V7zm9.002 13H13v-2.278c.595-.347 1-.985 1-1.722 0-1.103-.897-2-2-2s-2 .897-2 2c0 .736.405 1.375 1 1.722V20H6v-9h12l.002 9z">
+          </path>
+        </svg>
+
+        <input onkeydown="ValidateSignInPassword()" type="password" class="input-error signin-password"
+          placeholder="password">
+        <div class="view-state">
+          <svg id="signIn-yes" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
+            stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <svg style="display: none;" id="signIn-no" stroke="currentColor" fill="none" stroke-width="2"
+            viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+            </path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>
+        </div>
+        <span class=" input-error signin-password-error"></span>
+      </div>
+
+    </div>
+
+    <div class="remember">
+      <input type="checkbox" class="checkbox">
+      <span class="title-sm">Remember me</span>
+    </div>
+
+    <button onclick="ValidateSignIn()" class="btn primary-btn  title-sm">Sign in</button>
+    <span class="input-error signin-error title-sm"></span>
+    <span class="forgot_password">Forgot the password?</span>
+
+    <div class="option">
+      <hr>
+      <p class="title-sm span">or continue with</p>
+      <hr>
+    </div>
+
+    <div class="continue">
+      <button class="btn continue-link"><img src="./Assets/images/facebook.svg" alt="continue with facebook"></button>
+      <button class="btn continue-link"><img src="./Assets/images/google.svg" alt="continue with google"></button>
+      <button class="btn continue-link"><img src="./Assets/images/apple.svg" alt="continue with apple"></button>
+    </div>
+
+    <p class="other title-sm">
+      Don't have an account? <span class="span signup">Sign up</span>
+    </p>
+
+  </main>
+
+
+
+
+  <main style="display: none;" class="select-country">
+
+    <div class="section-title">
+
+      <button class="back">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+            d="M249.38 336 170 256l79.38-80m-68.35 80H342"></path>
+        </svg>
+      </button>
+
+      <h2 class="title-lg">Select Your Country</h2>
+    </div>
+
+    <div id="country-list"></div>
+
+    <div class=" country-continue">
+      <button disabled id="country-continue" class="btn primary-btn title-sm">Continue</button>
+    </div>
+
+  </main>
+
+
+
+  <main style="display: none;" class="edit-profile">
+
+    <div class="section-title">
+
+      <button class="back">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+            d="M249.38 336 170 256l79.38-80m-68.35 80H342"></path>
+        </svg>
+      </button>
+      <h2 class="title-lg">Fill your profile</h2>
+
+    </div>
+    <div class="profile-area">
+
+      <h3 class="title-md">your names</h3>
+      <div class="name-info">
+
+        <div class="input-group">
+          <input onkeyup="ValidateFullName()" id="fullname" type="text">
+
+          <span>Full Name</span>
+          <span class="input-error fullname-error">Required</span>
+        </div>
+
+        <div class="input-group">
+          <input onkeyup="ValidateNickName()" id="nickname" type="text">
+
+          <span>NickName</span>
+          <span class="input-error nickname-error">Required</span>
+        </div>
+
+        <div class="input-group">
+          <input onchange="ValidateDOB()" type="date" id="dateofbirth">
+          <span>Date of birth</span>
+          <span class="input-error DOB-error">Required</span>
+        </div>
+
+        <div class="input-group">
+          <select name="" id="">
+            <option value="male">male</option>
+            <option value="male">female</option>
+            <option value="male">other</option>
+          </select>
+
+          <span>Gender</span>
+        </div>
+
+      </div>
+
+      <h3 class="title-md">your contact Detail</h3>
+      <div class="other-info">
+        <div class="input-group">
+          <input onkeyup="ValidateEmail()" id="email" type="email">
+
+          <span>Email</span>
+          <span class="input-error email-error">Required</span>
+        </div>
+
+        <div class="input-group">
+          <input onkeyup="ValidatePhone()" id="phoneNo" type="tel">
+
+          <span>Phone Number</span>
+          <span class="input-error phone-error">Required</span>
+        </div>
+      </div>
+
+      <h3 class="title-md">More About you</h3>
+      <div class="about-info">
+        <div class="input-group">
+          <input onkeyup="ValidateOccupation()" id="occupation" type="text">
+
+          <span>occupation</span>
+          <span class="input-error occupation-error">Required</span>
+        </div>
+
+        <div class="input-group about-you">
+          <p onkeyup="ValidateAboutYou()" id="AboutYou" contenteditable="true"></p>
+
+          <span>About You</span>
+          <span class="about-you-error">Required</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="continue-profile">
+      <button onclick="ValidateProfile()" class="edit-profile-btn btn primary-btn title-sm">Continue</button>
+      <span style="color: var(--error);" class="profile-error title-sm"></span>
+    </div>
+  </main>
+
+
+
+
+  <main style="display: none;" class="upload-photo">
+
+    <div class="section-title">
+
+      <button class="back">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+            d="M249.38 336 170 256l79.38-80m-68.35 80H342"></path>
+        </svg>
+      </button>
+      <h2 class="title-lg">Add your Best photos</h2>
+    </div>
+
+    <p class="title-md">Add your best photos to get a higher amount of daily matches</p>
+
+    <div class="photo-area">
+
+      <div class="file-input">
+        <label for="photo1">
+          <figure>
+            <svg stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24" class="icon" height="1em"
+              width="1em" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7V11H7C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11V17C11 17.5523 11.4477 18 12 18C12.5523 18 13 17.5523 13 17V13H17C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11H13V7Z"
+                fill="currentColor"></path>
+            </svg>
+          </figure>
+          <input type="file" accept="images/jpeg, images/png, images/jpg" id="photo1">
+          <img id="photo-1" alt="">
+        </label>
+      </div>
+
+      <div class="file-input">
+        <label for="photo2">
+          <figure>
+            <svg stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24" class="icon" height="1em"
+              width="1em" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7V11H7C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11V17C11 17.5523 11.4477 18 12 18C12.5523 18 13 17.5523 13 17V13H17C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11H13V7Z"
+                fill="currentColor"></path>
+            </svg>
+          </figure>
+          <input type="file" accept="images/jpeg, images/png, images/jpg" id="photo2">
+          <img id="photo-2" alt="">
+        </label>
+      </div>
+
+      <div class="file-input">
+        <label for="photo3">
+          <figure>
+            <svg stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24" class="icon" height="1em"
+              width="1em" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7V11H7C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11V17C11 17.5523 11.4477 18 12 18C12.5523 18 13 17.5523 13 17V13H17C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11H13V7Z"
+                fill="currentColor"></path>
+            </svg>
+          </figure>
+          <input type="file" accept="images/jpeg, images/png, images/jpg" id="photo3">
+
+          <img id="photo-3" alt="">
+        </label>
+      </div>
+
+      <div class="file-input">
+        <label for="photo4">
+          <figure>
+
+            <svg stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24" class="icon" height="1em"
+              width="1em" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7V11H7C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11V17C11 17.5523 11.4477 18 12 18C12.5523 18 13 17.5523 13 17V13H17C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11H13V7Z"
+                fill="currentColor"></path>
+            </svg>
+          </figure>
+          <input type="file" accept="images/jpeg, images/png, images/jpg" id="photo4">
+
+          <img id="photo-4" alt="">
+        </label>
+      </div>
+
+    </div>
+
+    <button disabled class="upload-photo-btn btn primary-btn title-sm">Continue</button>
+
+  </main>
+
+
+
+
+  <main style="display: none;" class="interest">
+    <div class="section-title">
+
+      <button class="back">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+            d="M249.38 336 170 256l79.38-80m-68.35 80H342"></path>
+        </svg>
+      </button>
+      <h2 class="title-lg">Select your interest</h2>
+
+    </div>
+
+    <p class="title-md">Select at least 5 interest to match soul with who has similar thing in common</p>
+
+    <div class="interest-group">
+      <input type="button" class="interest-btn title-sm" value="Gaming" />
+      <input type="button" class="interest-btn title-sm" value="Singing" />
+      <input type="button" class="interest-btn title-sm" value="Dancing" />
+      <input type="button" class="interest-btn title-sm" value="Language" />
+      <input type="button" class="interest-btn title-sm" value="Music" />
+      <input type="button" class="interest-btn title-sm" value="Books & Novels" />
+      <input type="button" class="interest-btn title-sm" value="Architecture" />
+      <input type="button" class="interest-btn title-sm" value="Photography" />
+      <input type="button" class="interest-btn title-sm" value="Shopping" />
+      <input type="button" class="interest-btn title-sm" value="Fashion" />
+      <input type="button" class="interest-btn title-sm" value="Writing" />
+      <input type="button" class="interest-btn title-sm" value="Nature & Plant" />
+      <input type="button" class="interest-btn title-sm" value="Painting" />
+      <input type="button" class="interest-btn title-sm" value="Football" />
+      <input type="button" class="interest-btn title-sm" value="Animal" />
+      <input type="button" class="interest-btn title-sm" value="Sociality" />
+      <input type="button" class="interest-btn title-sm" value="Gym & Fitness" />
+      <input type="button" class="interest-btn title-sm" value="Food & Drink" />
+      <input type="button" class="interest-btn title-sm" value="Places" />
+      <input type="button" class="interest-btn title-sm" value="Travel" />
+      <input type="button" class="interest-btn title-sm" value="Art" />
+    </div>
+
+    <button disabled class="interest--btn btn primary-btn title-sm">Continue</button>
+
+
+  </main>
+
+
+
+
+  <main style="display: none;" class="ideal-match">
+    <div class="section-title">
+
+      <button class="back">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+            d="M249.38 336 170 256l79.38-80m-68.35 80H342"></path>
+        </svg>
+      </button>
+      <h2 class="title-lg">Select your ideal match</h2>
+    </div>
+
+
+    <p class="title-md">what are you hoping to find on Sweet match Dating App</p>
+
+    <div class="all-ideal-match">
+
+      <button class="match-input">
+        <figure>
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="icon"
+            height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z">
+            </path>
+          </svg>
+        </figure>
+        <p class="title-md">Love</p>
+      </button>
+
+      <button class="match-input">
+        <figure>
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" class="icon" height="1em"
+            width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 10C14.2091 10 16 8.20914 16 6 16 3.79086 14.2091 2 12 2 9.79086 2 8 3.79086 8 6 8 8.20914 9.79086 10 12 10ZM5.5 13C6.88071 13 8 11.8807 8 10.5 8 9.11929 6.88071 8 5.5 8 4.11929 8 3 9.11929 3 10.5 3 11.8807 4.11929 13 5.5 13ZM21 10.5C21 11.8807 19.8807 13 18.5 13 17.1193 13 16 11.8807 16 10.5 16 9.11929 17.1193 8 18.5 8 19.8807 8 21 9.11929 21 10.5ZM12 11C14.7614 11 17 13.2386 17 16V22H7V16C7 13.2386 9.23858 11 12 11ZM5 15.9999C5 15.307 5.10067 14.6376 5.28818 14.0056L5.11864 14.0204C3.36503 14.2104 2 15.6958 2 17.4999V21.9999H5V15.9999ZM22 21.9999V17.4999C22 15.6378 20.5459 14.1153 18.7118 14.0056 18.8993 14.6376 19 15.307 19 15.9999V21.9999H22Z">
+            </path>
+          </svg>
+        </figure>
+
+        <p class="title-md">Friend</p>
+      </button>
+
+      <button class="match-input">
+        <figure>
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" class="icon" height="1em"
+            width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M5 22h14c1.103 0 2-.897 2-2V9a1 1 0 0 0-1-1h-3V7c0-2.757-2.243-5-5-5S7 4.243 7 7v1H4a1 1 0 0 0-1 1v11c0 1.103.897 2 2 2zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v1H9V7zm-4 3h2v2h2v-2h6v2h2v-2h2l.002 10H5V10z">
+            </path>
+          </svg>
+        </figure>
+
+        <p class="title-md">Fling</p>
+      </button>
+
+      <button class="match-input">
+        <figure>
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="icon"
+            height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+              d="M176 416v64M80 32h192a32 32 0 0 1 32 32v412a4 4 0 0 1-4 4H48h0V64a32 32 0 0 1 32-32zm240 160h112a32 32 0 0 1 32 32v256h0-160 0V208a16 16 0 0 1 16-16z">
+            </path>
+            <path
+              d="M98.08 431.87a16 16 0 1 1 13.79-13.79 16 16 0 0 1-13.79 13.79zm0-80a16 16 0 1 1 13.79-13.79 16 16 0 0 1-13.79 13.79zm0-80a16 16 0 1 1 13.79-13.79 16 16 0 0 1-13.79 13.79zm0-80a16 16 0 1 1 13.79-13.79 16 16 0 0 1-13.79 13.79zm0-80a16 16 0 1 1 13.79-13.79 16 16 0 0 1-13.79 13.79zm80 240a16 16 0 1 1 13.79-13.79 16 16 0 0 1-13.79 13.79zm0-80a16 16 0 1 1 13.79-13.79 16 16 0 0 1-13.79 13.79zm0-80a16 16 0 1 1 13.79-13.79 16 16 0 0 1-13.79 13.79zm0-80a16 16 0 1 1 13.79-13.79 16 16 0 0 1-13.79 13.79zm80 320a16 16 0 1 1 13.79-13.79 16 16 0 0 1-13.79 13.79zm0-80a16 16 0 1 1 13.79-13.79 16 16 0 0 1-13.79 13.79zm0-80a16 16 0 1 1 13.79-13.79 16 16 0 0 1-13.79 13.79z">
+            </path>
+            <ellipse cx="256" cy="176" rx="15.95" ry="16.03" transform="rotate(-45 255.99 175.996)"></ellipse>
+            <path
+              d="M258.08 111.87a16 16 0 1 1 13.79-13.79 16 16 0 0 1-13.79 13.79zM400 400a16 16 0 1 0 16 16 16 16 0 0 0-16-16zm0-80a16 16 0 1 0 16 16 16 16 0 0 0-16-16zm0-80a16 16 0 1 0 16 16 16 16 0 0 0-16-16zm-64 160a16 16 0 1 0 16 16 16 16 0 0 0-16-16zm0-80a16 16 0 1 0 16 16 16 16 0 0 0-16-16zm0-80a16 16 0 1 0 16 16 16 16 0 0 0-16-16z">
+            </path>
+          </svg>
+        </figure>
+
+        <p class="title-md">Business</p>
+      </button>
+
+    </div>
+
+    <button disabled class=" ideal-match-btn btn primary-btn title-sm">Continue</button>
+
+  </main>
+
+
+
+
+  <main style="display: none;" class="create-pin">
+    <div class="section-title">
+
+      <button class="back">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+            d="M249.38 336 170 256l79.38-80m-68.35 80H342"></path>
+        </svg>
+      </button>
+      <h2 class="title-lg">Create new pin</h2>
+
+    </div>
+
+    <p class="title-md">Add a pin number to make your account more secure</p>
+
+    <div class="pin-group">
+      <input maxlength="4" onkeydown="valdatePin()" id="pin-1" type="number">
+
+      <div class="input-length"></div>
+      <div style="display:none;" class="check">&checkmark;</div>
+      <div style="display:none;" class="times">&times;</div>
+
+    </div>
+
+    <span style="align-self: center; color: var(--error);" class="title-sm pin-error">4 characters only</span>
+
+
+    <div class="btns">
+      <button class="btn pin-btn secondary-btn">Skip</button>
+
+      <button disabled class="create-pin-btn btn primary-btn">continue</button>
+    </div>
+  </main>
+
+
+
+
+  <main style="display: none;" class="create-congrat">
+    <div class="congrat-container">
+      <figure class="congrat-img">
+        <div class="congrat-user">
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" class="icon"
+            height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z">
+            </path>
+          </svg>
+        </div>
+
+        <div class="filter1"></div>
+        <div class="filter2"></div>
+        <div class="filter3"></div>
+        <div class="filter4"></div>
+        <div class="filter5"></div>
+        <div class="filter6"></div>
+        <div class="filter7"></div>
+      </figure>
+      <h2 class="title-lg">Congratulations!</h2>
+      <p style="text-align: center;" class="title-sm">your account is ready to use, you will be redirected to the
+        home page in a few seconds!
+      </p>
+
+      <div class="circle start-Page"></div>
+      <a href="main.html" style="width: 50%; display: none;" class="btn title-sm congrat-btn">Start</a>
+    </div>
+  </main>
+
+
+
+
+  <main style="display: none;" class="Forgot-password">
+    <div style="align-self: self-start;" class="section-title">
+
+      <button class="back">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+            d="M249.38 336 170 256l79.38-80m-68.35 80H342"></path>
+        </svg>
+      </button>
+      <h2 class="title-lg"> Forgot password</h2>
+
+    </div>
+    <figure>
+      <img src="" width="200" height="200" alt="">
+    </figure>
+
+    <p class="title-md">Select which contact detalils we should use to reset your password</p>
+
+    <div class="restore-method-container">
+
+      <div class="restore-method">
+        <figure>
+
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" class="icon" height="1em"
+            width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path fill="none" d="M0 0h24v24H0z"></path>
+            <path
+              d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z">
+            </path>
+          </svg>
+        </figure>
+
+        <div class="method-content">
+          <span class="span">Via SMS</span>
+          <p class="title-md">+134*******56</p>
+        </div>
+      </div>
+
+      <div class="restore-method">
+        <figure>
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" class="icon" height="1em"
+            width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path fill="none" d="M0 0h24v24H0z"></path>
+            <path
+              d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z">
+            </path>
+          </svg>
+        </figure>
+
+        <div class="method-content">
+          <span class="span">Via Mail</span>
+          <p class="title-md">om*************@gmail.com</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+
+
+  <main style="display: none;" class="get-code">
+    <div class="section-title">
+
+      <button class="back">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+            d="M249.38 336 170 256l79.38-80m-68.35 80H342"></path>
+        </svg>
+      </button>
+      <h2 class="title-lg"> Forgot password</h2>
+    </div>
+
+
+    <p class="title-md">Code has been sent to Om*************@gmail.com</p>
+
+    <form class="pin-group">
+      <input placeholder="" type="number">
+
+      <div class="input-length"></div>
+      <div style="display:none;" class="check">&checkmark;</div>
+      <p class="other resend-code title-sm">Resend code in <span class="sec span">60</span>s</p>
+    </form>
+
+
+    <button disabled class="btn primary-btn title-sm">Verify</button>
+
+
+
+  </main>
+
+
+
+
+  <main style="display: none;" class="create-new-password">
+
+    <div class="section-title">
+
+      <button class="back">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+            d="M249.38 336 170 256l79.38-80m-68.35 80H342"></path>
+        </svg>
+      </button>
+
+      <h2 class="title-lg"> Create new Password</h2>
+
+    </div>
+
+    <figure>
+      <img src="" width="250" height="250" alt="">
+    </figure>
+
+    <p class="title-md">Create Your new password</p>
+
+    <div class="input-container">
+
+      <div class="input-group title-sm">
+        <svg class="inverse-svg" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+          height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M12 2C9.243 2 7 4.243 7 7v2H6c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v2H9V7zm9.002 13H13v-2.278c.595-.347 1-.985 1-1.722 0-1.103-.897-2-2-2s-2 .897-2 2c0 .736.405 1.375 1 1.722V20H6v-9h12l.002 9z">
+          </path>
+        </svg>
+
+        <input type="password" class="password" placeholder="password">
+        <div class="view-state">
+          <svg id="yes" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
+            stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <svg id="no" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
+            stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+            </path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>
+        </div>
+
+      </div>
+
+      <div class="input-group title-sm">
+        <svg class="inverse-svg" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+          height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M12 2C9.243 2 7 4.243 7 7v2H6c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v2H9V7zm9.002 13H13v-2.278c.595-.347 1-.985 1-1.722 0-1.103-.897-2-2-2s-2 .897-2 2c0 .736.405 1.375 1 1.722V20H6v-9h12l.002 9z">
+          </path>
+        </svg>
+
+        <input type="password" class="confirm-password" placeholder="confirm password">
+        <div class="view-state">
+          <svg id="yes" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
+            stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <svg id="no" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
+            stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+            </path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="remember">
+      <div class="color">
+        <input type="checkbox" class="checkbox">
+        <span></span>
+      </div>
+      <span class="remember title-sm">Remember me</span>
+    </div>
+
+    <button disabled class="btn primary-btn title-sm">Sign up</button>
+  </main>
+
+
+
+  <script>
+    window.onload = () => {
+      let preload = document.querySelector('.preload').style = 'display: none'
+      let circle = document.querySelector('.circle').style = 'animation: none'
+    }
+
+
+    allCountries = [
+      { "country": "Greece" },
+      { "country": "Netherlands" },
+      { "country": "Belgium" },
+      { "country": "France" },
+      { "country": "Monaco" },
+      { "country": "Andorra" },
+      { "country": "Spain" },
+      { "country": "Hungary" },
+      { "country": "Bosnia and Herzegovina" },
+      { "country": "Croatia" },
+      { "country": "Serbia" },
+      { "country": "Italy" },
+      { "country": "Vatican City State" },
+      { "country": "Romania" },
+      { "country": "Switzerland" },
+      { "country": "Czech Republic" },
+      { "country": "Slovakia" },
+      { "country": "Austria" },
+      { "country": "United Kingdom" },
+      { "country": "Denmark" },
+      { "country": "Sweden" },
+      { "country": "Norway" },
+      { "country": "Finland" },
+      { "country": "Lithuania" },
+      { "country": "Latvia" },
+      { "country": "Estonia" },
+      { "country": "Russian Federation" },
+      { "country": "Ukraine" },
+      { "country": "Belarus" },
+      { "country": "Moldova" },
+      { "country": "Poland" },
+      { "country": "Germany" },
+      { "country": "Gibraltar" },
+      { "country": "Portugal" },
+      { "country": "Luxembourg" },
+      { "country": "Ireland" },
+      { "country": "Iceland" },
+      { "country": "Albania" },
+      { "country": "Malta" },
+      { "country": "Cyprus" },
+      { "country": "Georgia" },
+      { "country": "Armenia" },
+      { "country": "Bulgaria" },
+      { "country": "Turkey" },
+      { "country": "Faroe Islands" },
+      { "country": "Greenland" },
+      { "country": "San Marino" },
+      { "country": "Slovenia" },
+      { "country": "North Macedonia" },
+      { "country": "Liechtenstein" },
+      { "country": "Montenegro" },
+      { "country": "Saint Pierre and Miquelon" },
+      { "country": "United States" },
+      { "country": "Puerto Rico" },
+      { "country": "United States Virgin Islands" },
+      { "country": "Mexico" },
+      { "country": "Jamaica" },
+      { "country": "Guadeloupe" },
+      { "country": "Martinique" },
+      { "country": "French Guiana" },
+      { "country": "Barbados" },
+      { "country": "Antigua and Barbuda" },
+      { "country": "Cayman Islands" },
+      { "country": "British Virgin Islands" },
+      { "country": "Bermuda" },
+      { "country": "Grenada" },
+      { "country": "Montserrat" },
+      { "country": "Saint Kitts and Nevis" },
+      { "country": "Saint Lucia" },
+      { "country": "Saint Vincent and the Grenadines" },
+      { "country": "Curaçao" },
+      { "country": "Aruba" },
+      { "country": "Bahamas" },
+      { "country": "Anguilla" },
+      { "country": "Dominica" },
+      { "country": "Cuba" },
+      { "country": "Dominicanstan" },
+      { "country": "Haiti" },
+      { "country": "Trinidad and Tobago" },
+      { "country": "Turks and Caicos Islands" },
+      { "country": "Azerbaijan" },
+      { "country": "Kazakhstan" },
+      { "country": "Bhutan" },
+      { "country": "India" },
+      { "country": "India" },
+      { "country": "India" },
+      { "country": "Pakistan" },
+      { "country": "Afghanistan" },
+      { "country": "Sri Lanka" },
+      { "country": "Myanmar" },
+      { "country": "Lebanon" },
+      { "country": "Jordan" },
+      { "country": "Syria" },
+      { "country": "Iraq" },
+      { "country": "Kuwait" },
+      { "country": "Saudi Arabia" },
+      { "country": "Yemen" },
+      { "country": "Oman" },
+      { "country": "Israel" },
+      { "country": "Palestinian" },
+      { "country": "Bahrain" },
+      { "country": "Qatar" },
+      { "country": "Mongolia" },
+      { "country": "Nepal" },
+      { "country": "United Arab Emirates" },
+      { "country": "Iran" },
+      { "country": "Uzbekistan" },
+      { "country": "Tajikistan" },
+      { "country": "Kyrgyzstan" },
+      { "country": "Turkmenistan" },
+      { "country": "Japan" },
+      { "country": "Korea, South" },
+      { "country": "Viet Nam" },
+      { "country": "Hong Kong SAR" },
+      { "country": "Macao SAR" },
+      { "country": "Cambodia" },
+      { "country": "Laos" },
+      { "country": "China" },
+      { "country": "Taiwan" },
+      { "country": "Korea, North" },
+      { "country": "Bangladesh" },
+      { "country": "Maldives" },
+      { "country": "Malaysia" },
+      { "country": "Australia" },
+      { "country": "Indonesia" },
+      { "country": "Timor-Leste" },
+      { "country": "Philippines" },
+      { "country": "Thailand" },
+      { "country": "Singapore" },
+      { "country": "Brunei Darussalam" },
+      { "country": "New Zealand" },
+      { "country": "Northern Mariana Islands" },
+      { "country": "Guam" },
+      { "country": "Papua New Guinea" },
+      { "country": "Tonga" },
+      { "country": "Solomon Islands" },
+      { "country": "Vanuatu" },
+      { "country": "Fiji" },
+      { "country": "Nauru" },
+      { "country": "Wallis and Futuna" },
+      { "country": "American Samoa" },
+      { "country": "Kiribati" },
+      { "country": "New Caledonia" },
+      { "country": "French Polynesia" },
+      { "country": "Cook Islands" },
+      { "country": "Samoa" },
+      { "country": "Micronesia" },
+      { "country": "Marshall Islands" },
+      { "country": "Palau" },
+      { "country": "Tuvalu" },
+      { "country": "Niue" },
+      { "country": "Egypt" },
+      { "country": "Algeria" },
+      { "country": "Morocco" },
+      { "country": "Tunisia" },
+      { "country": "Libya" },
+      { "country": "Gambia" },
+      { "country": "Senegal" },
+      { "country": "Mauritania" },
+      { "country": "Mali" },
+      { "country": "Guinea" },
+      { "country": "Côte d'Ivoire" },
+      { "country": "Burkina Faso" },
+      { "country": "Niger" },
+      { "country": "Togolese Republic" },
+      { "country": "Benin" },
+      { "country": "Mauritius" },
+      { "country": "Liberia" },
+      { "country": "Sierra Leone" },
+      { "country": "Ghana" },
+      { "country": "Nigeria" },
+      { "country": "Chad" },
+      { "country": "Central African Republic" },
+      { "country": "Cameroon" },
+      { "country": "Cabo Verde" },
+      { "country": "São Tomé and Príncipe" },
+      { "country": "Equatorial Guinea" },
+      { "country": "Gabonese Republic" },
+      { "country": "Congo" },
+      { "country": "Congo (DRC)" },
+      { "country": "Angola" },
+      { "country": "Guinea-Bissau" },
+      { "country": "Seychelles" },
+      { "country": "Sudan" },
+      { "country": "Rwandese Republic" },
+      { "country": "Ethiopia" },
+      { "country": "Somalia" },
+      { "country": "Djibouti" },
+      { "country": "Kenya" },
+      { "country": "Tanzania" },
+      { "country": "Uganda" },
+      { "country": "Burundi" },
+      { "country": "Mozambique" },
+      { "country": "Zambia" },
+      { "country": "Madagascar" },
+      { "country": "Réunion" },
+      { "country": "Zimbabwe" },
+      { "country": "Namibia" },
+      { "country": "Malawi" },
+      { "country": "Lesotho" },
+      { "country": "Botswana" },
+      { "country": "Swaziland" },
+      { "country": "Comoros" },
+      { "country": "South Africa" },
+      { "country": "Eritrea" },
+      { "country": "South Sudan" },
+      { "country": "Belize" },
+      { "country": "Guatemala" },
+      { "country": "El Salvador" },
+      { "country": "Honduras" },
+      { "country": "Nicaragua" },
+      { "country": "Costa Rica" },
+      { "country": "Panama" },
+      { "country": "Perú" },
+      { "country": "Argentina" },
+      { "country": "Brazil" },
+      { "country": "Chile" },
+      { "country": "Colombia" },
+      { "country": "Venezuela" },
+      { "country": "Bolivia" },
+      { "country": "Guyana" },
+      { "country": "Ecuador" },
+      { "country": "Paraguay" },
+      { "country": "Suriname" },
+      { "country": "Uruguay" },
+      { "country": "Falkland Islands" },
+      { "country": "United States of America" },
+      { "country": "Burma (Myanmar)" },
+      { "country": "Eswatini" },
+      { "country": "French southern Territories" }
+
+    ]
+
+
+
+    // all visibility icon
+    let s_p_v = document.getElementById('signUp-yes')
+    let s_p_nv = document.getElementById('signUp-no')
+    let s_n_v = document.getElementById('signIn-yes')
+    let s_n_nv = document.getElementById('signIn-no')
+
+
+    // all button tag
+    let login_btn = document.querySelectorAll('.login')
+    let signup_btn = document.querySelectorAll('.signup')
+    let Your_interest = document.querySelectorAll('.interest-btn')
+    let country_btn = document.getElementById('country-continue')
+    let edit_profile_btn = document.querySelector('.edit-profile-btn')
+    let upload_photo_btn = document.querySelector('.upload-photo-btn')
+    let interest_btn = document.querySelector('.interest--btn')
+    let ideal_match_btn = document.querySelector('.ideal-match-btn')
+    let create_pin_btn = document.querySelector('.create-pin-btn')
+    let congratulation_btn = document.querySelector('.congrat-btn')
+    let Forgot_password_btn = document.querySelector('.Forgot-password-btn')
+    let get_code_btn = document.querySelector('.get-code-btn')
+    let create_new_password_btn = document.querySelector('.create-new-password-btn')
+    let match_input = document.querySelectorAll('.match-input')
+
+    // all span error
+    let pin_error = document.querySelector('.pin-error')
+    let signup_emailError = document.querySelector('.signup-email-error')
+    let signup_passwordError = document.querySelector('.signup-password-error')
+    let signup_submitError = document.querySelector('.signup-error')
+    let signin_emailError = document.querySelector('.signin-email-error')
+    let signin_passwordError = document.querySelector('.signin-password-error')
+    let signin_submitError = document.querySelector('.signin-error')
+    let fullnameError = document.querySelector('.fullname-error')
+    let nicknameError = document.querySelector('.nickname-error')
+    let DOBError = document.querySelector('.DOB-error')
+    let emailError = document.querySelector('.email-error')
+    let phoneError = document.querySelector('.phone-error')
+    let occupationError = document.querySelector('.occupation-error')
+    let AboutYouError = document.querySelector('.about-you-error')
+    let profileError = document.querySelector('.profile-error')
+
+
+    // all main tag element
+    let main = document.querySelectorAll('main')
+    let sign_option = document.querySelector('.sign-option')
+    let login_page = document.querySelector('.sign-in')
+    let signup_page = document.querySelector('.sign-up')
+    let select_country = document.querySelector('.select-country')
+    let edit_profile = document.querySelector('.edit-profile')
+    let upload_photo = document.querySelector('.upload-photo')
+    let interest = document.querySelector('.interest')
+    let ideal_match = document.querySelector('.ideal-match')
+    let create_pin = document.querySelector('.create-pin')
+    let congratulation = document.querySelector('.create-congrat')
+    let Forgot_password = document.querySelector('.Forgot-password')
+    let get_code = document.querySelector('.get-code')
+    let create_new_password = document.querySelector('.create-new-password')
+    let start_Page = document.querySelector('.start-Page')
+
+
+    // all event  listeners
+    login_btn.forEach(btn => {
+      btn.onclick = () => {
+        main.forEach(main => {
+          main.style = 'display: none';
+        })
+        login_page.style = 'display: flex';
+      }
+    });
+
+    signup_btn.forEach(btn => {
+      btn.onclick = () => {
+        main.forEach(main => {
+          main.style = 'display: none';
+        });
+        signup_page.style = 'display: flex';
+      }
+    });
+
+    country_btn.onclick = () => {
+      main.forEach(main => {
+        main.style = 'display: none';
+      });
+      edit_profile.style = 'display: flex';
+    }
+
+    upload_photo_btn.onclick = () => {
+      main.forEach(main => {
+        main.style = 'display: none';
+      });
+      interest.style = 'display: flex';
+    }
+
+    interest_btn.onclick = () => {
+      main.forEach(main => {
+        main.style = 'display: none';
+      });
+      ideal_match.style = 'display: flex';
+    }
+
+    ideal_match_btn.onclick = () => {
+      main.forEach(main => {
+        main.style = 'display: none';
+      });
+      create_pin.style = 'display: flex';
+    }
+
+    create_pin_btn.onclick = () => {
+      main.forEach(main => {
+        main.style = 'display: none';
+      });
+      congratulation.style = 'display: flex';
+
+      setTimeout(() => {
+        congratulation_btn.style = 'display: inline'
+        start_Page.style = 'display: none'
+      }, 5000);
+    }
+
+
+
+    var clicked = 'background: var(--main-color); color : var(--bg)'
+    Your_interest.forEach(element => {
+      element.onclick = (e) => {
+        interest_btn.disabled = false;
+        e.target.style = clicked;
+      }
+    });
+
+    match_input.forEach(element => {
+      element.addEventListener('click', (e) => {
+        e.target.className = 'clicked';
+        match_input.forEach(all => {
+          all.style = 'cursor: not-allowed;'
+          all.disabled = true
+          ideal_match_btn.disabled = false;
+        })
+      })
+    });
+
+
+
+    s_p_v.onclick = () => {
+      let password = document.querySelector('.signup-password');
+
+      password.setAttribute('type', 'text')
+
+      s_p_nv.style = 'display: block'
+      s_p_v.style = 'display: none'
+    }
+    s_p_nv.onclick = () => {
+      let password = document.querySelector('.signup-password');
+
+      password.setAttribute('type', 'password')
+
+      s_p_v.style = 'display: block'
+      s_p_nv.style = 'display: none'
+    }
+
+    s_n_v.onclick = () => {
+      let password = document.querySelector('.signin-password');
+
+      password.setAttribute('type', 'text')
+
+      s_n_nv.style = 'display: block'
+      s_n_v.style = 'display: none'
+    }
+    s_n_nv.onclick = () => {
+      let password = document.querySelector('.signin-password');
+
+      password.setAttribute('type', 'password')
+
+      s_n_v.style = 'display: block'
+      s_n_nv.style = 'display: none'
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // all render functions
+    function ValidateSignUpEmail() {
+      let email = document.querySelector('.signup-email').value;
+      if (email.length == 0) {
+        signup_emailError.style = 'color: var(--error)'
+        signup_emailError.innerHTML = 'Email is required'
+        return false
+      }
+
+      if (!email.match(/^[A-Za-z\._\-[0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
+        signup_emailError.style = 'color: var(--error)'
+        signup_emailError.innerHTML = 'Email invalid'
+        return false;
+      }
+      signup_emailError.style = 'color: var(--keppei)'
+      signup_emailError.innerHTML = 'Valid'
+      return true
+
+    }
+    function ValidateSignUpPassword() {
+      let password = document.querySelector('.signup-password').value;
+      if (password.length == 0) {
+        signup_passwordError.style = 'color: var(--error)'
+        signup_passwordError.innerHTML = 'password is required'
+        return false
+      }
+
+      if (password.length <= 10) {
+        signup_passwordError.style = 'color: var(--error)'
+        signup_passwordError.innerHTML = 'more than 10 chars'
+        return false
+      }
+
+      if (!password.match(/^[A-Z]/)) {
+        signup_passwordError.style = 'color: var(--error)'
+        signup_passwordError.innerHTML = ' at least 1 Capital letter'
+        return false;
+      }
+
+      signup_passwordError.style = 'color: var(--keppei)'
+      signup_passwordError.innerHTML = 'Valid'
+      return true
+    }
+
+    function ValidateSignInEmail() {
+      let email = document.querySelector('.signin-email').value;
+      if (email.length == 0) {
+        signin_emailError.style = 'color: var(--error)'
+        signin_emailError.innerHTML = 'Email is required'
+        return false
+      }
+
+      if (!email.match(/^[A-Za-z\._\-[0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
+        signin_emailError.style = 'color: var(--error)'
+        signin_emailError.innerHTML = 'Email invalid'
+        return false;
+      }
+      signin_emailError.style = 'color: var(--keppei)'
+      signin_emailError.innerHTML = 'Valid'
+      return true
+
+    }
+    function ValidateSignInPassword() {
+      let password = document.querySelector('.signin-password').value;
+      if (password.length == 0) {
+        return false
+      }
+      return false
+    }
+
+
+    function ValidateSignUp() {
+      if (!ValidateSignUpEmail() || !ValidateSignUpPassword()) {
+        signup_submitError.style = 'color: var(--error)'
+        signup_submitError.style.display = 'block';
+        signup_submitError.innerHTML = 'Please fix error to submit';
+        setTimeout(function () { signup_submitError.style.display = 'none'; }, 3000)
+        return false
+      }
+      main.forEach(main => {
+        main.style = 'display: none';
+      });
+      select_country.style = 'display: flex';
+      return true
+    }
+
+    function ValidateSignIn() {
+      if (!ValidateSignInEmail() || !ValidateSignInPassword()) {
+        signin_submitError.style = 'color: var(--error)'
+        signin_submitError.style.display = 'block';
+        signin_submitError.innerHTML = 'Wrong password please try again';
+        setTimeout(function () { signin_submitError.style.display = 'none'; }, 3000)
+        return false
+      }
+      section.forEach(section => {
+        section.style = 'display: none';
+      });
+      create_profile.style = 'display: flex';
+      return true
+    }
+
+
+    function valdatePin() {
+      var input_length = document.querySelector('.input-length')
+      var pin_1 = document.getElementById('pin-1')
+
+
+      pin_1.style = 'letter-spacing: 50px;'
+      let required = 3;
+      var left = required - pin_1.value.length;
+
+      if (left == 0) {
+        input_length.innerHTML = document.querySelector('.check').innerHTML;
+        input_length.style = 'color: var(--keppei); font-size: var(--headline-md)';
+        pin_error.style = 'align-self: center; color: var(--keppei);';
+        pin_error.innerHTML = 'valid';
+        create_pin_btn.disabled = false;
+        return true
+      }
+      if (left < 0) {
+        input_length.innerHTML = document.querySelector('.times').innerHTML;
+        input_length.style = 'color: red; font-size: var(--headline-md)';
+        pin_error.style = 'color: red; align-self: center;';
+        pin_error.innerHTML = '4 characters only';
+        create_pin_btn.disabled = true;
+        return false
+      }
+    }
+
+
+    AllRequest()
+    function AllRequest() {
+      allCountries
+        .sort((a, b) => (a.country > b.country ? 1 : -1))
+        .forEach(country => {
+          const div = document.createElement('div')
+          div.className = 'Country'
+          const p = document.createElement('p')
+          p.innerHTML = country.country
+          div.appendChild(p)
+          const input = document.createElement('input')
+          input.setAttribute('type', 'checkbox')
+          input.onclick = checkCountry
+          input.id = 'countryInput'
+          div.appendChild(input)
+          document.getElementById('country-list').appendChild(div)
+        });
+    }
+
+    function checkCountry(e) {
+      let btn = document.querySelectorAll('#countryInput')
+
+      btn.forEach(btn => btn.checked = false)
+      e.target.checked = true;
+      country_btn.disabled = false
+
+    }
+
+
+    function ValidateFullName() {
+      var fullname = document.getElementById('fullname').value;
+
+      if (fullname.length == 0) {
+        fullnameError.style = 'color: var(--error)'
+        fullnameError.innerHTML = 'Full Name is required'
+        return false;
+      }
+      if (!fullname.match(/^[A-Za-z]*\s{1}[A-Za-z]*$/)) {
+        fullnameError.style = 'color: var(--error)'
+        fullnameError.innerHTML = 'Write out Full Name'
+        return false
+      }
+      fullnameError.style = 'color: var(--keppei)'
+      fullnameError.innerHTML = 'Valid'
+      return true
+    }
+
+    function ValidateNickName() {
+      var nickname = document.getElementById('nickname').value;
+
+      if (nickname.length == 0) {
+        nicknameError.style = 'color: var(--error)'
+        nicknameError.innerHTML = 'Nick Name is required'
+        return false;
+      }
+
+      if (nickname.length <= 1) {
+        nicknameError.style = 'color: var(--error)'
+        nicknameError.innerHTML = 'Nick Name is to short'
+        return false;
+      }
+      nicknameError.style = 'color: var(--keppei)'
+      nicknameError.innerHTML = 'Valid'
+      return true
+    }
+
+    function ValidateDOB() {
+      var DOB = document.getElementById('dateofbirth').value;
+
+      if (DOB.length == 0) {
+        DOBError.style = 'color: var(--error)'
+        DOBError.innerHTML = 'Date Of Birth is required'
+        return false;
+      }
+      DOBError.style = 'color: var(--keppei)'
+      DOBError.innerHTML = 'Valid'
+      return true
+    }
+
+    function ValidateEmail() {
+      var email = document.getElementById('email').value;
+      if (email.length == 0) {
+        emailError.style = 'color: var(--error)'
+        emailError.innerHTML = 'Email is required'
+        return false
+      }
+
+      if (!email.match(/^[A-Za-z\._\-[0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
+        emailError.style = 'color: var(--error)'
+        emailError.innerHTML = 'Email invalid'
+        return false;
+      }
+      emailError.style = 'color: var(--keppei)'
+      emailError.innerHTML = 'Valid'
+      return true
+
+    }
+
+    function ValidatePhone() {
+      var phone = document.getElementById('phoneNo').value;
+      if (phone.length == 0) {
+        phoneError.style = 'color: var(--error)'
+        phoneError.innerHTML = 'phone is required'
+        return false
+      }
+
+      if (phone.length !== 10) {
+        phoneError.style = 'color: var(--error)'
+        phoneError.innerHTML = 'should be 10 digit'
+        return false;
+      }
+      if (!phone.match(/^[0-9]{10}$/)) {
+        phoneError.style = 'color: var(--error)'
+        phoneError.innerHTML = 'only digit please.'
+        return false;
+      }
+      phoneError.style = 'color: var(--keppei)'
+      phoneError.innerHTML = 'Valid'
+      return true
+    }
+
+    function ValidateOccupation() {
+      var occupation = document.getElementById('occupation').value;
+
+      if (occupation.length == 0) {
+        occupationError.style = 'color: var(--error)'
+        occupationError.innerHTML = 'Occupation is required'
+        return false;
+      }
+
+      if (occupation.length <= 2) {
+        occupationError.style = 'color: var(--error)'
+        occupationError.innerHTML = 'Occupation is too short'
+        return false;
+      }
+      occupationError.style = 'color: var(--keppei)'
+      occupationError.innerHTML = 'Valid'
+      return true
+    }
+
+    function ValidateAboutYou() {
+      var AboutYou = document.getElementById('AboutYou').innerHTML;
+      var required = 200;
+      var left = required - AboutYou.length;
+      var right = AboutYou.length - required;
+
+      if (left > 0) {
+        AboutYouError.style = 'color: var(--keppei)'
+        AboutYouError.innerHTML = left + ' more characters left'
+        return true
+      }
+
+      AboutYouError.style = 'color: var(--error)'
+      AboutYouError.innerHTML = right + 'more than'
+      return false
+    }
+
+
+    function ValidateProfile() {
+      if (!ValidateFullName() || !ValidateNickName || !ValidateDOB() || !ValidateEmail() || !ValidatePhone() || !ValidateOccupation() || !ValidateAboutYou()) {
+        profileError.style.display = 'block';
+        profileError.innerHTML = 'Please fix error to submit';
+        setTimeout(function () { profileError.style.display = 'none'; }, 3000)
+        return false
+      }
+
+      main.forEach(main => {
+        main.style = 'display: none';
+      });
+      upload_photo.style = 'display: flex';
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //  other events
+
+
+    let sec = document.querySelector('.sec')
+    let resend_code = document.querySelector('.resend-code')
+
+    let code_exp = 60
+
+    setInterval(() => {
+      code_exp--;
+      sec.innerHTML = code_exp
+
+      if (code_exp == 0) {
+        resend_code.innerHTML = 'resend code'
+      }
+    }, 1000);
+
+
+    let photo_1 = document.getElementById("photo-1");
+    let photo1 = document.getElementById("photo1");
+
+    photo1.addEventListener("change", () => {
+      photo_1.src = URL.createObjectURL(photo1.files[0])
+      photo_1.style = 'display: block; z-index: 9;'
+
+      upload_photo_btn.disabled = false;
+
+    })
+
+    let photo_2 = document.getElementById("photo-2");
+    let photo2 = document.getElementById("photo2");
+
+    photo2.addEventListener("change", () => {
+      photo_2.src = URL.createObjectURL(photo2.files[0])
+      photo_2.style = 'display: block; z-index: 9;'
+
+      upload_photo_btn.disabled = false;
+    })
+
+
+    let photo_3 = document.getElementById("photo-3");
+    let photo3 = document.getElementById("photo3");
+
+    photo3.addEventListener("change", () => {
+      photo_3.src = URL.createObjectURL(photo3.files[0])
+      photo_3.style = 'display: block; z-index: 9;'
+
+      upload_photo_btn.disabled = false;
+    })
+
+
+    let photo_4 = document.getElementById("photo-4");
+    let photo4 = document.getElementById("photo4");
+
+    photo4.addEventListener("change", () => {
+      photo_4.src = URL.createObjectURL(photo4.files[0])
+      photo_4.style = 'display: block; z-index: 9;'
+
+      upload_photo_btn.disabled = false;
+    })
+
+
+
+  </script>
+</body>
+
+</html>

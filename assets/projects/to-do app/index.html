@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>to-do app</title>
+  <style>
+    :root {
+      --bg: linear-gradient(135deg, rgb(195, 0, 255), rgb(236, 30, 255));
+      --error-bg: linear-gradient(135deg, rgba(195, 0, 255, 0.582), rgba(236, 30, 255, 0.582));
+      --bg-color: rgb(195, 0, 255);
+      --white: #fff;
+      --header-color: #eee;
+      --completed-color: gray;
+    }
+
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: 'rubik';
+    }
+
+
+    body {
+      background: var(--bg);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      background-color: var(--white);
+      padding: 20px;
+      min-width: 320px;
+      max-width: 400px;
+      min-height: 500px;
+      height: 50%;
+      overflow-y: auto;
+      border-top: 5px solid white;
+      border-bottom: 5px solid white;
+      box-shadow: 0 0 0 2px #000000d0;
+    }
+
+
+
+    .container::-webkit-scrollbar {
+      width: 10px;
+      border-radius: 20px;
+      margin: 10px;
+    }
+
+    .container::-webkit-scrollbar-thumb {
+      background: var(--bg);
+      border: 1px solid;
+      border-right: none;
+    }
+
+
+    .container::-webkit-scrollbar-track {
+      background-color: var(--header-color);
+      width: 50px;
+      margin: 10px;
+      border: 1px solid;
+      border-right: none;
+    }
+
+    .newTodo {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      gap: -10;
+      height: 40px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .newTodo input {
+      height: 30px;
+      border: 2px solid var(--completed-color);
+      border-right: none;
+      height: 100%;
+      margin-right: -20px;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+      font-size: 20px;
+      padding-left: 10px;
+      width: 100%;
+      outline: none;
+    }
+
+    .newTodo button {
+      height: 100%;
+      width: 40%;
+      border-radius: 20px;
+      background: var(--bg);
+      font-size: 18px;
+      font-style: italic;
+      text-transform: capitalize;
+      font-weight: 600;
+      color: var(--white);
+      border: 0;
+    }
+
+    .TODO {
+      color: var(--header-color);
+      margin: 12px;
+      font-weight: 600;
+
+    }
+
+    .todo-container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .todo {
+      font-size: 17px;
+      width: 100%;
+      border-bottom: 2px solid;
+      color: var(--completed-color);
+      padding-bottom: 5px;
+      margin-bottom: 15px;
+      margin-top: 5px;
+    }
+
+
+    .to-do {
+      background: var(--bg);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--white);
+      padding: 20px;
+      position: relative;
+      border: 2px solid;
+      font-size: 18px;
+
+    }
+
+    .completed-to-do {
+      background: var(--bg);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 20px;
+      filter: grayscale(100%);
+      color: var(--completed-color);
+      text-decoration: line-through;
+      border: 2px solid;
+      font-size: 18px;
+    }
+
+    .delete {
+      position: absolute;
+      right: 5px;
+      bottom: 5px;
+    }
+
+    .checkbox {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 10px;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      flex-direction: column;
+    }
+
+    footer h1 {
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    footer p {
+      font-size: 18px;
+    }
+
+    .alert_container {
+      position: fixed;
+      padding: 10px 20px;
+      background: var(--error-bg);
+      border: 1px solid black;
+      color: var(--white);
+      font-size: 18px;
+      font-weight: 500;
+      width: 220px;
+      transition: 2s ease-in-out;
+      top: 40px;
+      left: -100%;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="alert_container">
+    <p class="error"></p>
+  </div>
+
+  <h1 class="TODO">TO-DO APP</h1>
+
+  <div class="container">
+
+    <div class="newTodo">
+      <input id="to-do_title" placeholder="to-do title..." type="text">
+      <button onclick="create_todo()" class="save">save</button>
+    </div>
+    <div class="todo-container">
+    </div>
+
+  </div>
+
+
+  <footer>
+    <h1 id="length">0 todo</h1>
+    <p> simeon project | &copy; copyright 2024</p>
+  </footer>
+
+  <script>
+    to_do_Array = [
+    ]
+
+    // retrieve localstorage
+    const savedtodo = JSON.parse(localStorage.getItem('todo_array'));
+    // check if it's an array
+    if (Array.isArray(savedtodo)) {
+      to_do_Array = savedtodo
+    } else {
+      to_do_Array = [{
+        id: 1,
+        checked: false,
+        to_do: 'your todo'
+      }]
+    }
+
+    completed_Array = [
+    ]
+
+    // retrieve localstorage
+    const savedCompletedTodo = JSON.parse(localStorage.getItem('completed_todo_array'));
+    // check if it's an array
+    if (Array.isArray(savedCompletedTodo)) {
+      completed_Array = savedCompletedTodo
+    } else {
+      completed_Array = [{
+        id: 1,
+        checked: true,
+        completed_to_do: 'you completed todo',
+      }]
+    }
+
+    function savetodos() {
+      localStorage.setItem('todo_array', JSON.stringify(to_do_Array))
+    }
+
+    function savedCompletedTodos() {
+      localStorage.setItem('completed_todo_array', JSON.stringify(completed_Array))
+    }
+
+
+
+    render_Todo()
+
+    function render_Todo() {
+      const todo_container = document.querySelector('.todo-container')
+      todo_container.innerHTML = ''
+      const to_do = document.createElement('span')
+      to_do.innerHTML = 'tasks'
+      to_do.className = 'todo'
+      todo_container.appendChild(to_do)
+      to_do_Array.forEach(to_dos => {
+
+        // each todo main container
+
+        const to_do = document.createElement('div')
+        to_do.className = 'to-do';
+        todo_container.appendChild(to_do)
+
+        // checkbox for each todo
+
+        const checkbox = document.createElement('input')
+        checkbox.setAttribute('type', 'checkbox')
+        checkbox.className = 'checkbox'
+        checkbox.checked = to_dos.checked
+        checkbox.id = to_dos.id
+        checkbox.onclick = completed_TO_DO
+        to_do.appendChild(checkbox)
+
+        // the info of each todo
+
+        const info = document.createElement('div')
+        info.className = 'info'
+        to_do.appendChild(info)
+
+        // the todo title
+
+        const to_do_title = document.createElement('p')
+        to_do_title.className = 'title'
+        to_do_title.innerHTML = to_dos.to_do
+        info.appendChild(to_do_title)
+
+        // delete button for each to-do container
+
+        const deleteBtn = document.createElement('img')
+        deleteBtn.className = 'delete'
+        deleteBtn.id = to_dos.id
+        deleteBtn.src = 'trash.svg'
+        deleteBtn.onclick = delete_todo
+        to_do.appendChild(deleteBtn)
+      });
+
+      const completed = document.createElement('span')
+      completed.innerHTML = 'completed'
+      completed.className = 'todo'
+      todo_container.appendChild(completed)
+
+      completed_Array.forEach(Completed => {
+
+        // each todo main container
+
+        const completed_to_do = document.createElement('div')
+        completed_to_do.className = 'completed-to-do';
+        todo_container.appendChild(completed_to_do)
+
+        // checkbox for each todo
+
+        const checkbox = document.createElement('input')
+        checkbox.setAttribute('type', 'checkbox')
+        checkbox.className = 'checkbox'
+        checkbox.checked = Completed.checked
+        checkbox.id = Completed.id
+        checkbox.onclick = Restore_TO_DO
+        completed_to_do.appendChild(checkbox)
+
+        // the info of each todo
+
+        const info = document.createElement('div')
+        info.className = 'info'
+        completed_to_do.appendChild(info)
+
+        // the todo title
+
+        const completed_to_do_title = document.createElement('p')
+        completed_to_do_title.className = 'completed-title'
+        completed_to_do_title.innerHTML = Completed.completed_to_do
+        info.appendChild(completed_to_do_title)
+
+
+        // delete button for each to-do container
+
+        const deleteBtn = document.createElement('img')
+        deleteBtn.className = 'delete'
+        deleteBtn.id = Completed.id
+        deleteBtn.src = 'trash.svg'
+        deleteBtn.onclick = delete_completed_todo
+        completed_to_do.appendChild(deleteBtn)
+      });
+    }
+
+
+    function delete_todo(event) {
+      const deleteTodo = event.target
+      const todo_toDelete = deleteTodo.id
+
+      remove_todo(todo_toDelete)
+      render_Todo()
+    }
+
+    function remove_todo(todo_toDelete) {
+      to_do_Array = to_do_Array.filter(function (to_dos) {
+        if (to_dos.id == todo_toDelete) {
+          return false;
+        } else {
+          return true
+        }
+      })
+      savetodos()
+    }
+    function delete_completed_todo(event) {
+      const deleteCompletedTodo = event.target
+      const completed_todo_toDelete = deleteCompletedTodo.id
+
+      remove_completed_todo(completed_todo_toDelete)
+      render_Todo()
+    }
+
+    function remove_completed_todo(completed_todo_toDelete) {
+      completed_Array = completed_Array.filter(function (completed) {
+        if (completed.id == completed_todo_toDelete) {
+          return false;
+        } else {
+          return true
+        }
+      })
+      savedCompletedTodos()
+    }
+
+
+    function create_todo() {
+      let to_do_title = document.getElementById('to-do_title')
+      title = to_do_title.value
+
+
+      if (title) {
+        create_new_to_do(title)
+        render_Todo()
+        to_do_title = ''
+      } else {
+
+        document.querySelector('.alert_container').style = 'left: 10%'
+        setTimeout(() => {
+          document.querySelector('.alert_container').style = 'left: -100%'
+        }, 4000);
+        document.querySelector('.error').innerHTML = 'To-Do title required.'
+      }
+    }
+
+    function create_new_to_do(title) {
+
+      console.log(title);
+      const id = to_do_Array.length ? to_do_Array[to_do_Array.length - 1].id + 1 : 1;
+
+      to_do_Array.push({
+        to_do: title,
+        id: id
+      })
+      savetodos()
+    }
+
+
+    function completed_TO_DO(event) {
+      const complete_todo = event.target
+      const todo_to_complete = complete_todo.id
+
+      complete_the_todo(todo_to_complete)
+      render_Todo()
+    }
+
+    function complete_the_todo(todo_to_complete) {
+      const id = to_do_Array.length ? to_do_Array[to_do_Array.length - 1].id + 1 : 1;
+
+      to_do_Array = to_do_Array.filter(function (to_dos) {
+        if (to_dos.id == todo_to_complete) {
+
+          completed_Array.push({
+            id: id,
+            checked: true,
+            completed_to_do: to_dos.to_do
+          })
+        } else {
+          return true
+        }
+      })
+      savetodos()
+      savedCompletedTodos()
+    }
+
+
+
+    function Restore_TO_DO(event) {
+      const restore_todo = event.target
+      const todo_to_restore = restore_todo.id
+
+      restore_the_todo(todo_to_restore)
+      render_Todo()
+    }
+
+    function restore_the_todo(todo_to_restore) {
+      const id = to_do_Array.length ? to_do_Array[to_do_Array.length - 1].id + 1 : 1;
+
+      completed_Array = completed_Array.filter(function (restore) {
+        if (restore.id == todo_to_restore) {
+          console.log(restore.time);
+          to_do_Array.push({
+            to_do: restore.completed_to_do,
+            time: restore.completed_time,
+            checked: false,
+            id: id
+          })
+        } else {
+          return true
+        }
+      })
+      savetodos()
+      savedCompletedTodos()
+    }
+
+
+    // footer write up 
+    const length = completed_Array.length + to_do_Array.length === 1 ? "to-do" : "to-dos"
+    const todo_container = document.getElementById('length').innerHTML = `${completed_Array.length + to_do_Array.length + ' ' + length} `
+
+
+  </script>
+
+</body>
+
+</html>
